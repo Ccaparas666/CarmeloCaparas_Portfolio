@@ -76,3 +76,4 @@
 @utility responsive-guide {
   @apply border-4 border-red-500 md:border-green-500 lg:border-blue-500;
 }
+
