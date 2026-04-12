@@ -65,7 +65,7 @@ export const Home = () => {
                                 </div> */}
 
                                 <div className="relative inline-block overflow-hidden rounded-2xl">
-                                    {/* LAYER 1: THE PORTRAIT */}
+
                                     <img
                                         src="src/assets/Minimalist-Line-Art-Hand-Tattoo-removebg-preview.png"
                                         alt="Carmelo"
@@ -78,10 +78,8 @@ export const Home = () => {
                                         className="absolute top-0 z-9 w-full h-auto rounded-2xl"
                                     />
 
-                                    {/* LAYER 2: THE ATOM WRAPPER (Handles Centering) */}
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-9 w-[110%] h-[110%] pointer-events-none flex items-center justify-center">
 
-                                        {/* THE SVG (Handles Rotation) */}
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-9 w-[110%] h-[110%] pointer-events-none flex items-center justify-center">
                                         <svg
                                             viewBox="0 0 24 24"
                                             className="w-full h-full opacity-25 animate-[spin_25s_linear_infinite] filter drop-shadow-[0_0_12px_rgba(0,216,255,0.6)]"
@@ -93,7 +91,6 @@ export const Home = () => {
                                                 <ellipse rx="10" ry="4" cx="12" cy="12" />
                                             </g>
                                         </svg>
-
                                     </div>
                                 </div>
                             </div>
