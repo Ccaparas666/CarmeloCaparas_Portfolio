@@ -1,1 +1,2 @@
 npm install lucide-react - for icons
+npm install react-icons - social icons

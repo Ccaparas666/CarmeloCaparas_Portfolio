@@ -1,4 +1,5 @@
 import { SquareKanban, ExternalLink} from 'lucide-react';
+import { FaFacebook, FaGithub, FaLinkedin } from 'react-icons/fa';
 
 export const Home = () => {
     return (
@@ -39,13 +40,13 @@ export const Home = () => {
          
           <div className="flex justify-center lg:justify-start items-center gap-6 mt-4">
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-               
+                <FaGithub size={24}/>
             </a>
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                
+                <FaFacebook size={24}/>
             </a>
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-               
+               <FaLinkedin size={24}/>
             </a>
           </div>
         </div>
