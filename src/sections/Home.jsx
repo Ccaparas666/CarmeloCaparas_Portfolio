@@ -1,13 +1,14 @@
 import { SquareKanban, ExternalLink } from 'lucide-react';
 import { FaFacebook, FaGithub, FaLinkedin } from 'react-icons/fa';
 
+
+
 export const Home = () => {
+
     return (
         <>
-            <section id="home" className="min-h-screen flex items-center justify-center bg-background py-20 lg:py-0 overflow-hidden">
+            <section id="home" className="relative min-h-screen flex items-center justify-center bg-background/50 py-20 lg:py-0 overflow-hidden">
                 <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-
                     <div className="flex flex-col gap-8 text-center lg:text-start items-center lg:items-start order-2 lg:order-1">
                         <div className="space-y-4">
                             <h2 className="text-lg md:text-xl font-medium text-primary tracking-[0.2em] uppercase">
