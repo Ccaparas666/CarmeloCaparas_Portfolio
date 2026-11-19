@@ -69,15 +69,15 @@ function PingButton() {
 const SOCIAL_LINKS = [
   {
     label: "Email",
-    value: "carmelo@example.com",          // PLACEHOLDER
+    value: "carmelocaparas8@gmail.com",          // PLACEHOLDER
     href: "mailto:carmelo@example.com",    // PLACEHOLDER
     Icon: FaEnvelope,
     color: "text-highlight",
   },
   {
     label: "LinkedIn",
-    value: "/in/carmelo-caparas",          // PLACEHOLDER
-    href: "https://linkedin.com/in/",      // PLACEHOLDER
+    value: "carmelo-caparas",          // PLACEHOLDER
+    href: "https://www.linkedin.com/in/carmelo-caparas-jr-4399a9289/",      // PLACEHOLDER
     Icon: FaLinkedin,
     color: "text-primary",
   },
