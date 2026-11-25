@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { SquareKanban, ExternalLink, MapPin, Wifi } from "lucide-react";
-import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
+import { SquareKanban, ExternalLink, MapPin, ShieldCheck } from "lucide-react";
+import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 import handPng from "../assets/Minimalist-Line-Art-Hand-Tattoo-removebg-preview.png";
 import handJpg from "../assets/Minimalist-Line-Art-Hand-Tattoo.jpg";
 
 // ── Typing subtitle strings ───────────────────────────────────
 const SUBTITLES = [
-  "Routing & Switching",
-  "Network Security",
-  "Cloud & Automation",
-  "CCNA Certified",
+  "IT Officer",
+  "Network & Infrastructure",
+  "Systems & Firewall Admin",
+  "Technical Support",
 ];
 
 function useTypingEffect(strings, typingSpeed = 70, pauseMs = 1800, deletingSpeed = 40) {
@@ -25,7 +25,6 @@ function useTypingEffect(strings, typingSpeed = 70, pauseMs = 1800, deletingSpee
     if (!isDeleting && charIdx === current.length) {
       delay = pauseMs;
     } else if (isDeleting && charIdx === 0) {
-      // Use a ref-based reset to avoid cascading setState calls in effects
       setTimeout(() => {
         setIsDeleting(false);
         setStrIdx((i) => (i + 1) % strings.length);
@@ -53,12 +52,12 @@ function useTypingEffect(strings, typingSpeed = 70, pauseMs = 1800, deletingSpee
 
 // ── Mini topology SVG ─────────────────────────────────────────
 const NODES = [
-  { id: "inet",    x: 50,  y: 30,  label: "INET",     type: "cloud"   },
-  { id: "fw",      x: 50,  y: 110, label: "FW-01",    type: "router"  },
-  { id: "core",    x: 50,  y: 190, label: "CORE-SW",  type: "switch"  },
-  { id: "access1", x: 15,  y: 265, label: "ACC-01",   type: "switch"  },
-  { id: "access2", x: 85,  y: 265, label: "ACC-02",   type: "switch"  },
-  { id: "srv",     x: 50,  y: 265, label: "SRV-01",   type: "server"  },
+  { id: "inet",    x: 50,  y: 30,  label: "DUAL-ISP", type: "cloud"   },
+  { id: "fw",      x: 50,  y: 110, label: "PFSENSE",  type: "router"  },
+  { id: "core",    x: 50,  y: 190, label: "CAT-SW",   type: "switch"  },
+  { id: "access1", x: 15,  y: 265, label: "AD-DNS",   type: "server"  },
+  { id: "access2", x: 85,  y: 265, label: "VOIP",     type: "switch"  },
+  { id: "srv",     x: 50,  y: 265, label: "TRUENAS",  type: "server"  },
 ];
 
 const LINKS = [
@@ -69,7 +68,6 @@ const LINKS = [
   { from: "core",  to: "srv"     },
 ];
 
-// Node icon glyphs (simple Unicode / ASCII for SVG text)
 const NODE_ICONS = {
   cloud:  "☁",
   router: "⬡",
@@ -77,7 +75,6 @@ const NODE_ICONS = {
   server: "▬",
 };
 
-// Packet component that travels along a link
 function Packet({ x1, y1, x2, y2, duration, delay }) {
   const pathRef = useRef(null);
   const circleRef = useRef(null);
@@ -141,10 +138,9 @@ function TopologySVG() {
     <svg
       viewBox="0 0 100 300"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Network topology diagram"
+      aria-label="Network infrastructure topology diagram"
       className="w-full h-full"
     >
-      {/* Link lines */}
       {LINKS.map(({ from, to }) => {
         const a = nodeMap[from], b = nodeMap[to];
         return (
@@ -159,7 +155,6 @@ function TopologySVG() {
         );
       })}
 
-      {/* Traveling packets */}
       {LINKS.map(({ from, to }, i) => {
         const a = nodeMap[from], b = nodeMap[to];
         return (
@@ -173,24 +168,20 @@ function TopologySVG() {
         );
       })}
 
-      {/* Node circles + labels */}
       {NODES.map((n) => (
         <g key={n.id}>
-          {/* Outer glow ring */}
           <circle
             cx={n.x} cy={n.y} r={8}
             fill="none"
             stroke="rgba(32,178,166,0.15)"
             strokeWidth={4}
           />
-          {/* Main circle */}
           <circle
             cx={n.x} cy={n.y} r={5}
             fill="#141a1f"
             stroke="#20b2a6"
             strokeWidth={0.9}
           />
-          {/* Icon glyph */}
           <text
             x={n.x} y={n.y + 1.5}
             textAnchor="middle"
@@ -200,7 +191,6 @@ function TopologySVG() {
           >
             {NODE_ICONS[n.type]}
           </text>
-          {/* Label */}
           <text
             x={n.x + (n.x < 40 ? -11 : n.x > 60 ? 11 : 0)}
             y={n.y + (n.x < 40 || n.x > 60 ? 1 : -9)}
@@ -261,19 +251,19 @@ export const Home = () => {
           {/* Status pill */}
           <div className="status-pill border-success/40 bg-success/10 text-success">
             <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse inline-block" />
-            ONLINE · Available for Work
+            ONLINE · Cagayan de Oro City, PH
           </div>
 
           {/* Headline */}
           <div className="space-y-2">
-            <p className="font-mono text-sm text-primary tracking-[0.25em] uppercase">
-              Hi, I&apos;m Carmelo Caparas
+            <p className="font-mono text-sm text-primary tracking-[0.2em] uppercase">
+              Carmelo A. Caparas Jr.
             </p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.92]">
-              NETWORK
+              IT
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-300">
-                ENGINEER
+                OFFICER
               </span>
             </h1>
 
@@ -292,10 +282,10 @@ export const Home = () => {
 
           {/* Body copy */}
           <p className="text-muted-foreground text-base md:text-lg max-w-lg leading-relaxed">
-            {/* PLACEHOLDER – replace with your actual bio */}
-            Designing and securing resilient networks across enterprise and
-            cloud environments. Passionate about automation, zero-trust
-            architecture, and reliable uptime.
+            IT Officer with 2+ years of hands-on experience in end-user support,
+            network troubleshooting, and infrastructure operations — working with
+            Cisco switches, pfSense firewalls, Windows Server, Active Directory,
+            TrueNAS, and VoIP systems.
           </p>
 
           {/* CTA buttons */}
@@ -305,28 +295,28 @@ export const Home = () => {
               className="flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3.5 px-8 rounded-full font-bold shadow-lg shadow-primary/20
                          hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-200"
             >
-              View Projects <SquareKanban size={18} />
+              View Experience &amp; Labs <SquareKanban size={18} />
             </a>
             <a
               href="#contact"
               className="flex items-center justify-center gap-2 border-2 border-primary text-primary py-3.5 px-8 rounded-full font-bold
                          hover:bg-primary/10 hover:-translate-y-0.5 transition-all duration-200"
             >
-              Hire Me <ExternalLink size={18} />
+              Contact Me <ExternalLink size={18} />
             </a>
           </div>
 
           {/* Social links */}
           <div className="flex justify-center lg:justify-start items-center gap-5 mt-1">
             {[
-              { href: "https://github.com/",   Icon: FaGithub,   label: "GitHub"   },
-              { href: "https://facebook.com/", Icon: FaFacebook, label: "Facebook" },
-              { href: "https://linkedin.com/", Icon: FaLinkedin, label: "LinkedIn" },
+              { href: "mailto:carcapz123@gmail.com", Icon: FaEnvelope, label: "Email Carmelo" },
+              { href: "https://github.com/Ccaparas666", Icon: FaGithub, label: "GitHub" },
+              { href: "https://www.linkedin.com/in/carmelo-caparas-jr-4399a9289/", Icon: FaLinkedin, label: "LinkedIn" },
             ].map(({ href, Icon, label }) => ( // eslint-disable-line no-unused-vars
               <a
                 key={label}
                 href={href}
-                target="_blank"
+                target={href.startsWith("mailto:") ? "_self" : "_blank"}
                 rel="noreferrer"
                 aria-label={`${label} profile`}
                 className="text-muted-foreground hover:text-primary transition-colors duration-200"
@@ -342,10 +332,8 @@ export const Home = () => {
 
           {/* Photo card */}
           <div className="relative w-56 h-64 md:w-72 md:h-80 lg:w-80 lg:h-96 flex-shrink-0">
-            {/* Ambient blur */}
             <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-[60px]" aria-hidden="true" />
 
-            {/* Card */}
             <div className="relative w-full h-full rounded-3xl border border-border bg-card/80 backdrop-blur-sm
                             overflow-hidden shadow-2xl hover:border-primary/40 hover:shadow-primary/20 transition-all duration-500 rotate-1 hover:rotate-0">
               <img
@@ -356,7 +344,7 @@ export const Home = () => {
               />
               <img
                 src={handPng}
-                alt="Carmelo Caparas"
+                alt="Carmelo A. Caparas Jr."
                 className="relative z-10 w-full h-full object-contain"
               />
               <SignalRings />
@@ -364,22 +352,27 @@ export const Home = () => {
 
             {/* Terminal status card */}
             <div
-              className="absolute -bottom-10 -left-6 md:-left-10 terminal-block border border-primary/30 shadow-xl min-w-[180px]"
+              className="absolute -bottom-10 -left-6 md:-left-10 terminal-block border border-primary/30 shadow-xl min-w-[210px]"
               style={{ animation: "float 4s ease-in-out infinite" }}
             >
               <p className="text-primary font-mono text-xs mb-1">$ whois carmelo</p>
-              <p className="text-xs opacity-80">role      <span className="text-primary">NETWORK ENGINEER</span></p>
-              <p className="text-xs opacity-80">location  <span className="text-foreground flex items-center gap-1 inline-flex"><MapPin size={10} /> Philippines</span></p>
-              <p className="text-xs opacity-80">status    <span className="text-success">● AVAILABLE</span></p>
+              <p className="text-xs opacity-80">role      <span className="text-primary">IT OFFICER</span></p>
+              <p className="text-xs opacity-80">
+                location{" "}
+                <span className="text-foreground inline-flex items-center gap-1">
+                  <MapPin size={10} /> CDO, PH
+                </span>
+              </p>
+              <p className="text-xs opacity-80">exp       <span className="text-success">2+ YEARS</span></p>
             </div>
 
-            {/* Uptime chip */}
+            {/* Experience chip */}
             <div
               className="absolute -top-5 -right-4 md:-right-8 status-pill border-primary/40 bg-primary/10 text-primary text-xs shadow-lg"
               style={{ animation: "float 4s ease-in-out infinite", animationDelay: "0.6s" }}
             >
-              <Wifi size={11} />
-              UPTIME 99.9%
+              <ShieldCheck size={12} />
+              2+ YRS IT OPS
             </div>
           </div>
 
@@ -387,14 +380,14 @@ export const Home = () => {
           <div className="hidden md:flex flex-col gap-2 w-36 lg:w-44">
             <div className="card-noc border-primary/20 flex flex-col gap-2">
               <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
-                net topology
+                infra stack
               </p>
               <div className="h-64 lg:h-72">
                 <TopologySVG />
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                <span className="font-mono text-[9px] text-success">5 nodes · 0 alerts</span>
+                <span className="font-mono text-[9px] text-success">LAN · WAN · AD · NAS</span>
               </div>
             </div>
           </div>

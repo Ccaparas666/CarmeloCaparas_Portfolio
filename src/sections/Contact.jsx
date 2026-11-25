@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, CheckCircle, AlertCircle } from "lucide-react";
-import {
-  FaGithub, FaLinkedin, FaFacebook, FaEnvelope
-} from "react-icons/fa";
+import { Mail, CheckCircle, AlertCircle, ExternalLink } from "lucide-react";
+import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 // ── Fade-in hook ──────────────────────────────────────────────
 function useFadeIn(threshold = 0.1) {
@@ -28,18 +26,19 @@ function PingButton() {
   const handlePing = () => {
     if (state !== "idle") return;
     setState("pinging");
-    setTimeout(() => setState("replied"), 2200);
-    setTimeout(() => setState("idle"), 5000);
+    setTimeout(() => setState("replied"), 1600);
+    setTimeout(() => setState("idle"), 4500);
   };
 
   const labels = {
-    idle:    "$ ping carmelo.dev",
-    pinging: "$ pinging carmelo.dev …",
-    replied: "Reply in ~24h · TTL 64",
+    idle:    "$ ping carcapz123@gmail.com",
+    pinging: "$ resolving mailto interface …",
+    replied: "Ready — click email or compose below",
   };
 
   return (
     <button
+      type="button"
       onClick={handlePing}
       disabled={state === "pinging"}
       className={`w-full font-mono text-sm text-left px-4 py-3 rounded-lg border transition-all duration-300
@@ -69,30 +68,23 @@ function PingButton() {
 const SOCIAL_LINKS = [
   {
     label: "Email",
-    value: "carmelocaparas8@gmail.com",          // PLACEHOLDER
-    href: "mailto:carmelo@example.com",    // PLACEHOLDER
+    value: "carcapz123@gmail.com",
+    href: "mailto:carcapz123@gmail.com",
     Icon: FaEnvelope,
     color: "text-highlight",
   },
   {
     label: "LinkedIn",
-    value: "carmelo-caparas",          // PLACEHOLDER
-    href: "https://www.linkedin.com/in/carmelo-caparas-jr-4399a9289/",      // PLACEHOLDER
+    value: "carmelo-caparas-jr-4399a9289",
+    href: "https://www.linkedin.com/in/carmelo-caparas-jr-4399a9289/",
     Icon: FaLinkedin,
     color: "text-primary",
   },
   {
     label: "GitHub",
-    value: "github.com/carmelo",           // PLACEHOLDER
-    href: "https://github.com/",           // PLACEHOLDER
+    value: "github.com/Ccaparas666",
+    href: "https://github.com/Ccaparas666",
     Icon: FaGithub,
-    color: "text-muted-foreground",
-  },
-  {
-    label: "Facebook",
-    value: "fb.com/carmelo",               // PLACEHOLDER
-    href: "https://facebook.com/",         // PLACEHOLDER
-    Icon: FaFacebook,
     color: "text-muted-foreground",
   },
 ];
@@ -100,42 +92,25 @@ const SOCIAL_LINKS = [
 // ── Main component ─────────────────────────────────────────────
 export const Contact = () => {
   const [sectionRef, visible] = useFadeIn(0.1);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("idle"); // idle | success | error
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const validate = () => {
-    const e = {};
-    if (!form.name.trim())    e.name    = "Name is required";
-    if (!form.email.trim())   e.email   = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-                              e.email   = "Invalid email address";
-    if (!form.message.trim()) e.message = "Message cannot be empty";
-    return e;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-    if (errors[name]) setErrors((er) => ({ ...er, [name]: undefined }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleComposeMailto = (e) => {
     e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    // ── PLACEHOLDER: replace with real email/API submission ──
-    // e.g. fetch('/api/contact', { method:'POST', body: JSON.stringify(form) })
-    setStatus("success");
+    if (!subject.trim() && !message.trim()) {
+      setError("Please enter a subject or message before opening your email client.");
+      return;
+    }
+    setError("");
+    const mailtoUrl = `mailto:carcapz123@gmail.com?subject=${encodeURIComponent(
+      subject.trim() || "Portfolio Inquiry"
+    )}&body=${encodeURIComponent(message.trim())}`;
+    window.location.href = mailtoUrl;
   };
 
-  const inputClass = (field) =>
-    `w-full bg-terminal border rounded-lg px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/60
-     focus:outline-none focus:ring-1 transition-colors duration-200
-     ${errors[field]
-       ? "border-danger/70 focus:ring-danger/50"
-       : "border-border hover:border-primary/40 focus:border-primary focus:ring-primary/40"
-     }`;
+  const inputClass =
+    "w-full bg-terminal border border-border hover:border-primary/40 focus:border-primary focus:ring-1 focus:ring-primary/40 rounded-lg px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-colors duration-200";
 
   return (
     <section
@@ -153,7 +128,7 @@ export const Contact = () => {
         {/* Section header */}
         <div className="mb-12">
           <p className="font-mono text-xs text-primary uppercase tracking-[0.3em] mb-2">
-            &gt;_ ping carmelo.dev --connect
+            &gt;_ mailto carcapz123@gmail.com
           </p>
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter">
             Get In <span className="text-primary">Touch</span>
@@ -162,7 +137,7 @@ export const Contact = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
-          {/* ── Left: social + ping ───────────────────────── */}
+          {/* ── Left: direct channels + ping ──────────────── */}
           <div className="lg:col-span-2 flex flex-col gap-6">
 
             <div className="card-noc border-primary/15">
@@ -174,7 +149,7 @@ export const Contact = () => {
                   <a
                     key={label}
                     href={href}
-                    target={href.startsWith("mailto") ? "_self" : "_blank"}
+                    target={href.startsWith("mailto:") ? "_self" : "_blank"}
                     rel="noreferrer"
                     aria-label={`${label}: ${value}`}
                     className="flex items-center gap-3 group"
@@ -182,11 +157,11 @@ export const Contact = () => {
                     <div className={`p-2 rounded-lg bg-muted/50 border border-border group-hover:border-primary/40 transition-colors ${color}`}>
                       <SocialIcon size={16} />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
                         {label}
                       </p>
-                      <p className="text-sm text-foreground group-hover:text-primary transition-colors duration-200">
+                      <p className="text-sm text-foreground group-hover:text-primary transition-colors duration-200 truncate">
                         {value}
                       </p>
                     </div>
@@ -198,22 +173,21 @@ export const Contact = () => {
             {/* Ping interaction */}
             <div className="card-noc border-primary/15">
               <p className="font-mono text-xs text-muted-foreground mb-3">
-                Quick availability check:
+                Quick interface check:
               </p>
               <PingButton />
             </div>
 
-            {/* NOC status blurb */}
+            {/* Terminal blurb */}
             <div className="terminal-block border border-primary/20 text-xs leading-relaxed">
-              <p><span className="text-primary">$</span> traceroute to carmelo.dev</p>
-              <p className="mt-1 opacity-70">1  form-submit  &lt;1ms</p>
-              <p className="opacity-70">2  my-inbox     &lt;5min</p>
-              <p className="opacity-70">3  your-reply   ~24h</p>
-              <p className="mt-2 text-success">Response guaranteed within 24 hours.</p>
+              <p><span className="text-primary">$</span> whois contact</p>
+              <p className="mt-1 opacity-80">location: Cagayan de Oro City, Philippines</p>
+              <p className="opacity-80">email: carcapz123@gmail.com</p>
+              <p className="mt-2 text-success">Direct mailto link — no third-party form storage.</p>
             </div>
           </div>
 
-          {/* ── Right: contact form ───────────────────────── */}
+          {/* ── Right: functional mailto composer ─────────── */}
           <div className="lg:col-span-3">
             <div className="card-noc border-primary/15">
 
@@ -223,105 +197,70 @@ export const Contact = () => {
                 <span className="w-3 h-3 rounded-full bg-highlight/70" />
                 <span className="w-3 h-3 rounded-full bg-success/70" />
                 <span className="font-mono text-xs text-muted-foreground ml-2">
-                  contact@carmelo — bash
+                  compose-mail — carcapz123@gmail.com
                 </span>
               </div>
 
-              {status === "success" ? (
-                /* Success state */
-                <div className="flex flex-col items-center gap-4 py-12 text-center">
-                  <CheckCircle size={48} className="text-success" />
-                  <div>
-                    <p className="font-bold text-foreground text-lg">
-                      Packet received!
-                    </p>
-                    <p className="font-mono text-sm text-muted-foreground mt-1">
-                      Message delivered successfully. Reply expected within 24h.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => { setStatus("idle"); setForm({ name: "", email: "", message: "" }); }}
-                    className="font-mono text-xs text-primary hover:underline mt-2"
-                  >
-                    $ send another message
-                  </button>
+              <form onSubmit={handleComposeMailto} noValidate className="flex flex-col gap-5">
+                <div>
+                  <label htmlFor="subject" className="font-mono text-xs text-muted-foreground block mb-1.5">
+                    subject:
+                  </label>
+                  <input
+                    id="subject"
+                    name="subject"
+                    type="text"
+                    placeholder="IT Officer / Network & Infrastructure inquiry"
+                    value={subject}
+                    onChange={(e) => {
+                      setSubject(e.target.value);
+                      if (error) setError("");
+                    }}
+                    className={inputClass}
+                  />
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-                  {/* Name */}
-                  <div>
-                    <label htmlFor="name" className="font-mono text-xs text-muted-foreground block mb-1.5">
-                      name:
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="Your name"
-                      value={form.name}
-                      onChange={handleChange}
-                      className={inputClass("name")}
-                      autoComplete="name"
-                    />
-                    {errors.name && (
-                      <p className="font-mono text-xs text-danger mt-1 flex items-center gap-1">
-                        <AlertCircle size={11} /> {errors.name}
-                      </p>
-                    )}
-                  </div>
 
-                  {/* Email */}
-                  <div>
-                    <label htmlFor="email" className="font-mono text-xs text-muted-foreground block mb-1.5">
-                      email:
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="you@domain.com"
-                      value={form.email}
-                      onChange={handleChange}
-                      className={inputClass("email")}
-                      autoComplete="email"
-                    />
-                    {errors.email && (
-                      <p className="font-mono text-xs text-danger mt-1 flex items-center gap-1">
-                        <AlertCircle size={11} /> {errors.email}
-                      </p>
-                    )}
-                  </div>
+                <div>
+                  <label htmlFor="message" className="font-mono text-xs text-muted-foreground block mb-1.5">
+                    message:
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={5}
+                    placeholder="Hello Carmelo, I'd like to discuss…"
+                    value={message}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                      if (error) setError("");
+                    }}
+                    className={`${inputClass} resize-none`}
+                  />
+                </div>
 
-                  {/* Message */}
-                  <div>
-                    <label htmlFor="message" className="font-mono text-xs text-muted-foreground block mb-1.5">
-                      message:
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      placeholder="Hello Carmelo, I'd like to discuss…"
-                      value={form.message}
-                      onChange={handleChange}
-                      className={`${inputClass("message")} resize-none`}
-                    />
-                    {errors.message && (
-                      <p className="font-mono text-xs text-danger mt-1 flex items-center gap-1">
-                        <AlertCircle size={11} /> {errors.message}
-                      </p>
-                    )}
-                  </div>
+                {error && (
+                  <p className="font-mono text-xs text-danger flex items-center gap-1.5">
+                    <AlertCircle size={13} /> {error}
+                  </p>
+                )}
 
+                <div className="flex flex-col sm:flex-row gap-3 mt-1">
                   <button
                     type="submit"
                     className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold py-3.5 px-8 rounded-full
-                               hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200 mt-1"
+                               hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
                   >
-                    <Send size={16} /> Send Message
+                    <Mail size={16} /> Open in Email Client
                   </button>
-                </form>
-              )}
+                  <a
+                    href="mailto:carcapz123@gmail.com"
+                    className="flex items-center justify-center gap-2 border border-primary/50 text-primary font-mono text-sm py-3.5 px-6 rounded-full
+                               hover:bg-primary/10 transition-all duration-200"
+                  >
+                    Direct mailto <ExternalLink size={14} />
+                  </a>
+                </div>
+              </form>
             </div>
           </div>
         </div>
