@@ -292,7 +292,7 @@ export const About = () => {
               ["Title",    "IT Officer | Network & Infrastructure"],
               ["Location", "Cagayan de Oro City, Philippines"],
               ["Exp.",     "2+ years"],
-              ["Degree",   "BSIT – Web Development"],
+              ["Degree",   "Bachelor of Science in Information Technology (BSIT)"],
             ].map(([k, v]) => (
               <div key={k} className="flex gap-2 text-xs">
                 <span className="text-muted-foreground w-20 shrink-0">{k}</span>
