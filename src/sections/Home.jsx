@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SquareKanban, ExternalLink, MapPin, ShieldCheck } from "lucide-react";
 import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
-import handPng from "../assets/Minimalist-Line-Art-Hand-Tattoo-removebg-preview.png";
-import handJpg from "../assets/Minimalist-Line-Art-Hand-Tattoo.jpg";
+import heroNetworkImg from "../assets/hero-network-setup.jpg";
 
 // ── Typing subtitle strings ───────────────────────────────────
 const SUBTITLES = [
@@ -335,17 +334,11 @@ export const Home = () => {
             <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-[60px]" aria-hidden="true" />
 
             <div className="relative w-full h-full rounded-3xl border border-border bg-card/80 backdrop-blur-sm
-                            overflow-hidden shadow-2xl hover:border-primary/40 hover:shadow-primary/20 transition-all duration-500 rotate-1 hover:rotate-0">
+                            overflow-hidden shadow-2xl hover:border-primary/40 hover:shadow-primary/20 transition-all duration-500 rotate-1 hover:rotate-0 flex items-center justify-center p-2">
               <img
-                src={handJpg}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <img
-                src={handPng}
-                alt="Carmelo A. Caparas Jr."
-                className="relative z-10 w-full h-full object-contain"
+                src={heroNetworkImg}
+                alt="Carmelo A. Caparas Jr. — Network & Infrastructure Workstation"
+                className="relative z-10 w-full h-full object-cover rounded-2xl"
               />
               <SignalRings />
             </div>

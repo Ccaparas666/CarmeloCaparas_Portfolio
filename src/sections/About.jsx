@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   Shield, Network, HardDrive, Headphones,
-  Award, Briefcase, GraduationCap, ChevronRight, X, ExternalLink
+  Award, Briefcase, GraduationCap, ChevronRight, X, ZoomIn
 } from "lucide-react";
+import certCcnaFundamentals from "../assets/cert-ccna-fundamentals.jpg";
+import certCiscoPacketTracer from "../assets/cert-cisco-packet-tracer.jpg";
+import certUdemyWebdev from "../assets/cert-udemy-webdev.jpg";
 
 // ── Technical Skills ──────────────────────────────────────────
 const SKILL_GROUPS = [
@@ -72,6 +76,7 @@ const CERTIFICATES = [
     issuer: "Simplilearn SkillUp",
     date: "November 2026",
     type: "Course Completion Certificate",
+    image: certCcnaFundamentals,
     summary:
       "Completed online foundational training covering CCNA 200-301 networking concepts, IP addressing, routing, switching, and network fundamentals.",
     color: "border-primary/40 text-primary",
@@ -82,6 +87,7 @@ const CERTIFICATES = [
     issuer: "Cisco Networking Academy",
     date: "September 2026",
     type: "Course Completion Certificate",
+    image: certCiscoPacketTracer,
     summary:
       "Completed hands-on introductory training on simulating, configuring, and troubleshooting network topologies using Cisco Packet Tracer.",
     color: "border-highlight/40 text-highlight",
@@ -92,6 +98,7 @@ const CERTIFICATES = [
     issuer: "Udemy",
     date: "February 2024",
     type: "Course Completion Certificate",
+    image: certUdemyWebdev,
     summary:
       "Completed practical web development coursework covering responsive styling, CSS, Bootstrap, and JavaScript fundamentals.",
     color: "border-success/40 text-success",
@@ -226,7 +233,7 @@ export const About = () => {
       className="relative min-h-screen scroll-mt-24 section-padding"
       style={{
         opacity:   sectionVisible ? 1 : 0,
-        transform: sectionVisible ? "translateY(0)" : "translateY(32px)",
+        transform: sectionVisible ? "none" : "translateY(32px)",
         transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
       }}
     >
@@ -389,14 +396,26 @@ export const About = () => {
           <p className="font-mono text-xs text-muted-foreground mb-6">
             Course completions and technical training — click any card for enlarged details.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {CERTIFICATES.map((c) => (
               <button
                 key={c.id}
                 type="button"
                 onClick={() => setSelectedCert(c)}
-                className={`card-noc border ${c.color} text-left flex flex-col justify-between gap-3 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200`}
+                className={`group card-noc border ${c.color} text-left flex flex-col justify-between gap-3 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 overflow-hidden`}
               >
+                <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden border border-border bg-terminal">
+                  <img
+                    src={c.image}
+                    alt={`${c.title} certificate`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-colors duration-200 flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 inline-flex items-center gap-1.5 font-mono text-xs bg-background/90 text-primary border border-primary/40 px-3 py-1.5 rounded-full">
+                      <ZoomIn size={13} /> View Certificate
+                    </span>
+                  </div>
+                </div>
                 <div>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground block mb-1">
                     {c.type}
@@ -409,7 +428,7 @@ export const About = () => {
                   <span className="font-mono text-[11px] text-muted-foreground">
                     {c.issuer} · {c.date}
                   </span>
-                  <ExternalLink size={13} className="text-primary shrink-0" />
+                  <ZoomIn size={13} className="text-primary shrink-0" />
                 </div>
               </button>
             ))}
@@ -417,51 +436,57 @@ export const About = () => {
         </div>
       </div>
 
-      {/* Enlarged certificate modal */}
-      {selectedCert && (
-        <div
-          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setSelectedCert(null)}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="cert-modal-title"
-        >
+      {/* Enlarged certificate modal (portaled to body so fixed positioning is always viewport-centered) */}
+      {selectedCert &&
+        createPortal(
           <div
-            className="card-noc border-primary/40 max-w-lg w-full shadow-2xl relative flex flex-col gap-4"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setSelectedCert(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cert-modal-title"
           >
-            <div className="flex items-start justify-between gap-4 pb-3 border-b border-border">
-              <div>
-                <p className="font-mono text-[11px] text-primary uppercase tracking-widest">
-                  {selectedCert.type}
-                </p>
-                <h4 id="cert-modal-title" className="text-lg font-bold text-foreground mt-1">
-                  {selectedCert.title}
-                </h4>
+            <div
+              className="card-noc border-primary/40 max-w-3xl w-full shadow-2xl relative flex flex-col gap-4 max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-4 pb-3 border-b border-border">
+                <div>
+                  <p className="font-mono text-[11px] text-primary uppercase tracking-widest">
+                    {selectedCert.type}
+                  </p>
+                  <h4 id="cert-modal-title" className="text-lg font-bold text-foreground mt-1">
+                    {selectedCert.title}
+                  </h4>
+                  <p className="font-mono text-xs text-muted-foreground mt-0.5">
+                    {selectedCert.issuer} · {selectedCert.date}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCert(null)}
+                  aria-label="Close certificate details"
+                  className="p-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors shrink-0"
+                >
+                  <X size={16} />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setSelectedCert(null)}
-                aria-label="Close certificate details"
-                className="p-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
-              >
-                <X size={16} />
-              </button>
-            </div>
 
-            <div className="terminal-block border border-border text-xs space-y-1.5">
-              <p><span className="text-primary">recipient:</span> Carmelo A. Caparas Jr.</p>
-              <p><span className="text-primary">issuer:</span> {selectedCert.issuer}</p>
-              <p><span className="text-primary">completed:</span> {selectedCert.date}</p>
-              <p><span className="text-primary">category:</span> Training &amp; Course Certificate</p>
-            </div>
+              <div className="rounded-lg overflow-hidden border border-border bg-terminal">
+                <img
+                  src={selectedCert.image}
+                  alt={`${selectedCert.title} enlarged certificate`}
+                  className="w-full h-auto max-h-[65vh] object-contain mx-auto"
+                />
+              </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {selectedCert.summary}
-            </p>
-          </div>
-        </div>
-      )}
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {selectedCert.summary}
+              </p>
+            </div>
+          </div>,
+          document.body
+        )}
     </section>
   );
 };
