@@ -149,7 +149,7 @@ const TIMELINE = [
 
 // ── Education ─────────────────────────────────────────────────
 const EDUCATION = {
-  degree: "Bachelor of Science in Information Technology – Web Development",
+  degree: "Bachelor of Science in Information Technology",
   school: "Lourdes College",
   period: "May 2019 – May 2024",
 };
